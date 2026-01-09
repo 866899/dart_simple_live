@@ -71,8 +71,14 @@ Widget buildFullControls(
           ),
         ),
         Positioned.fill(
-          child: GestureDetector(
-            onTap: controller.onTap,
+          child: Listener(
+            onPointerSignal: (event) {
+              if (event is PointerScrollEvent) {
+                controller.onScrollVolume(event.scrollDelta.dy);
+              }
+            },
+            child: GestureDetector(
+              onTap: controller.onTap,
             onDoubleTapDown: controller.onDoubleTap,
             onLongPress: () {
               if (controller.lockControlsState.value) {
@@ -104,6 +110,7 @@ Widget buildFullControls(
               ),
             ),
           ),
+        ),
         ),
 
         // 顶部
@@ -433,8 +440,14 @@ Widget buildControls(
         ),
       ),
       Positioned.fill(
-        child: GestureDetector(
-          onTap: controller.onTap,
+        child: Listener(
+          onPointerSignal: (event) {
+            if (event is PointerScrollEvent) {
+              controller.onScrollVolume(event.scrollDelta.dy);
+            }
+          },
+          child: GestureDetector(
+            onTap: controller.onTap,
           onDoubleTapDown: controller.onDoubleTap,
           onVerticalDragStart: controller.onVerticalDragStart,
           onVerticalDragUpdate: controller.onVerticalDragUpdate,
@@ -449,6 +462,7 @@ Widget buildControls(
             ),
           ),
         ),
+      ),
       ),
       Obx(
         () => AnimatedPositioned(
