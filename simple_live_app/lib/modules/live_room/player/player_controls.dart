@@ -51,7 +51,15 @@ Widget buildFullControls(
 ) {
   var padding = MediaQuery.of(videoState.context).padding;
   GlobalKey volumeButtonKey = GlobalKey();
-  return buildDragToMoveArea(
+  return Obx(
+    () => MouseRegion(
+      cursor: controller.isMouseVisible.value
+          ? SystemMouseCursors.basic
+          : SystemMouseCursors.none,
+      onEnter: controller.onEnter,
+      onExit: controller.onExit,
+      onHover: (event) => controller.onHover(event, videoState.context),
+      child: buildDragToMoveArea(
     child: Stack(
       children: [
         Container(),
@@ -89,11 +97,7 @@ Widget buildFullControls(
             onVerticalDragStart: controller.onVerticalDragStart,
             onVerticalDragUpdate: controller.onVerticalDragUpdate,
             onVerticalDragEnd: controller.onVerticalDragEnd,
-            child: MouseRegion(
-              onHover: (PointerHoverEvent event) {
-                controller.onHover(event, videoState.context);
-              },
-              child: Container(
+            child: Container(
                 width: double.infinity,
                 height: double.infinity,
                 color: Colors.transparent,
@@ -108,7 +112,6 @@ Widget buildFullControls(
                 //   )),
                 // ),
               ),
-            ),
           ),
         ),
         ),
@@ -407,6 +410,8 @@ Widget buildFullControls(
           ),
         ),
       ],
+    ),
+  ),
     ),
   );
 }
