@@ -23,7 +23,7 @@ Widget playerControls(
   LiveRoomController controller,
 ) {
   return Obx(() {
-    if (controller.fullScreenState.value) {
+    if (controller.fullScreenState.value || controller.windowFullScreenState.value) {
       return buildFullControls(
         videoState,
         controller,
@@ -143,6 +143,8 @@ Widget buildFullControls(
                     onPressed: () {
                       if (controller.smallWindowState.value) {
                         controller.exitSmallWindow();
+                      } else if (controller.windowFullScreenState.value) {
+                        controller.exitWindowFullScreen();
                       } else {
                         controller.exitFull();
                       }
@@ -333,13 +335,31 @@ Widget buildFullControls(
                     onPressed: () {
                       if (controller.smallWindowState.value) {
                         controller.exitSmallWindow();
+                      } else if (controller.windowFullScreenState.value &&
+                          !controller.fullScreenState.value) {
+                        controller.exitWindowFullScreen();
                       } else {
                         controller.exitFull();
                       }
                     },
-                    icon: const Icon(
-                      Remix.fullscreen_exit_fill,
+                    icon: Icon(
+                      controller.fullScreenState.value
+                          ? Remix.fullscreen_exit_fill
+                          : Remix.aspect_ratio_line,
                       color: Colors.white,
+                    ),
+                  ),
+                  Visibility(
+                    visible: !controller.fullScreenState.value &&
+                        controller.windowFullScreenState.value,
+                    child: IconButton(
+                      onPressed: () {
+                        controller.enterFullScreen();
+                      },
+                      icon: const Icon(
+                        Remix.fullscreen_line,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ],
@@ -575,6 +595,19 @@ Widget buildControls(
                     },
                     icon: const Icon(
                       Icons.picture_in_picture,
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                  ),
+                ),
+                Visibility(
+                  visible: !Platform.isAndroid && !Platform.isIOS,
+                  child: IconButton(
+                    onPressed: () {
+                      controller.enterWindowFullScreen();
+                    },
+                    icon: const Icon(
+                      Remix.aspect_ratio_line,
                       color: Colors.white,
                       size: 24,
                     ),
