@@ -37,6 +37,7 @@ import 'package:simple_live_app/services/local_storage_service.dart';
 import 'package:simple_live_app/services/migration_service.dart';
 import 'package:simple_live_app/services/platform_service.dart';
 import 'package:simple_live_app/services/sync_service.dart';
+import 'package:simple_live_app/services/user_activity_service.dart';
 import 'package:simple_live_app/services/window_service.dart';
 import 'package:simple_live_app/src/rust/frb_generated.dart';
 import 'package:simple_live_app/widgets/status/app_loadding_widget.dart';
@@ -119,6 +120,8 @@ Future initServices() async {
   Get.put(PlatformService());
 
   Get.put(SyncService());
+
+  Get.put(UserActivityService());
 
   Get.put(FollowService());
 
@@ -211,10 +214,22 @@ class MyApp extends StatelessWidget {
           builder: FlutterSmartDialog.init(
             loadingBuilder: ((msg) => const AppLoaddingWidget()),
             //字体大小不跟随系统变化
-            builder: (context, child) => MediaQuery(
-              data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
-              child: Stack(
-                children: [
+            builder: (context, child) {
+              return MouseRegion(
+                onEnter: (_) => UserActivityService.instance.updateActivity(),
+                child: Listener(
+                  onPointerDown: (_) =>
+                      UserActivityService.instance.updateActivity(),
+                  onPointerMove: (_) =>
+                      UserActivityService.instance.updateActivity(),
+                  onPointerHover: (_) =>
+                      UserActivityService.instance.updateActivity(),
+                  behavior: HitTestBehavior.translucent,
+                  child: MediaQuery(
+                    data: MediaQuery.of(context)
+                        .copyWith(textScaler: const TextScaler.linear(1.0)),
+                    child: Stack(
+                      children: [
                   //侧键返回
                   RawGestureDetector(
                     excludeFromSemantics: true,
@@ -278,6 +293,9 @@ class MyApp extends StatelessWidget {
                 ],
               ),
             ),
+          ),
+        );
+      },
           ),
         ),
       );

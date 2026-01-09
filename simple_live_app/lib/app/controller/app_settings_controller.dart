@@ -82,6 +82,10 @@ class AppSettingsController extends GetxController {
 
     getPlayerCompatMode();
 
+    getUserActivityCheckEnable();
+
+    getUserActivityTimeout();
+
     getPlayerAutoPause();
 
     getPlayerForceHttps();
@@ -321,6 +325,14 @@ class AppSettingsController extends GetxController {
 
   @SettingItem(defaultValue: 60, key: LocalStorageService.kRoomAutoExitDuration)
   var roomAutoExitDuration = 60.obs;
+
+  /// 开启用户活跃检测
+  @SettingItem(defaultValue: false, key: LocalStorageService.kUserActivityCheckEnable)
+  var userActivityCheckEnable = false.obs;
+
+  /// 用户活跃超时时间（分钟）
+  @SettingItem(defaultValue: 30, key: LocalStorageService.kUserActivityTimeout)
+  var userActivityTimeout = 30.obs;
 
   @SettingItem(defaultValue: false, key: LocalStorageService.kPlayerCompatMode)
   var playerCompatMode = false.obs;

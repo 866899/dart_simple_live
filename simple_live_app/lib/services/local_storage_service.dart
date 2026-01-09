@@ -279,6 +279,12 @@ class LocalStorageService extends GetxService {
   /// 休眠阈值（天）
   static const String kDormancyThreshold = "DormancyThreshold";
 
+  /// 开启用户活跃检测
+  static const String kUserActivityCheckEnable = "UserActivityCheckEnable";
+
+  /// 用户活跃超时时间（分钟）
+  static const String kUserActivityTimeout = "UserActivityTimeout";
+
   late Box settingsBox;
   late Box<String> shieldBox;
 

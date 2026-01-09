@@ -227,6 +227,24 @@ extension AppSettingsControllerSettingGen on AppSettingsController {
     roomAutoExitDuration.value = LocalStorageService.instance.getValue(kRoomAutoExitDuration, 60);
   }
 
+  void setUserActivityCheckEnable(bool e) {
+    userActivityCheckEnable.value = e;
+    LocalStorageService.instance.setValue(kUserActivityCheckEnable, e);
+  }
+
+  void getUserActivityCheckEnable() {
+    userActivityCheckEnable.value = LocalStorageService.instance.getValue(kUserActivityCheckEnable, false);
+  }
+
+  void setUserActivityTimeout(int e) {
+    userActivityTimeout.value = e;
+    LocalStorageService.instance.setValue(kUserActivityTimeout, e);
+  }
+
+  void getUserActivityTimeout() {
+    userActivityTimeout.value = LocalStorageService.instance.getValue(kUserActivityTimeout, 30);
+  }
+
   void setPlayerCompatMode(bool e) {
     playerCompatMode.value = e;
     LocalStorageService.instance.setValue(kPlayerCompatMode, e);
@@ -569,6 +587,8 @@ const String kQualityLevelCellular = "QualityLevelCellular";
 const String kAutoExitEnable = "AutoExitEnable";
 const String kAutoExitDuration = "AutoExitDuration";
 const String kRoomAutoExitDuration = "RoomAutoExitDuration";
+const String kUserActivityCheckEnable = "UserActivityCheckEnable";
+const String kUserActivityTimeout = "UserActivityTimeout";
 const String kPlayerCompatMode = "PlayerCompatMode";
 const String kPlayerBufferSize = "PlayerBufferSize";
 const String kPlayerAutoPause = "PlayerAutoPause";
